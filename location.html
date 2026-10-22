@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- ASO LINK -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --Yellow: rgb(255, 208, 0);
+            --gray: rgb(77, 77, 77);
+            --green: rgb(33, 160, 8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+
+
+        html {
+            font-size: 62.5%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            scroll-padding-top: 4rem;
+        }
+
+        html::-webkit-scrollbar {
+            width: 1.3rem;
+        }
+
+        html::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        html::-webkit-scrollbar-thumb {
+            background: var(--Yellow);
+            border-radius: 5rem;
+        }
+
+
+
+
+
+        /* header */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 9%;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+
+        .header .logo img {
+            height: 90px;
+            width: 293px;
+        }
+
+
+        .header .navbar a {
+            color: #333;
+            font-size: 2rem;
+            margin: 0 .8rem;
+            font-weight: bold;
+        }
+
+        .header .navbar a:hover {
+            color: var(--Yellow);
+            font-size: 2.2rem;
+            text-decoration: none;
+
+        }
+
+
+        .header .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .header .navbar .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 1;
+        }
+
+        .header .navbar .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 1.6rem;
+        }
+
+        .header .navbar .dropdown-content a:hover {
+            background-color: var(--Yellow);
+        }
+
+        .header .navbar .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+
+
+
+        .header .navbar #close-navbar {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            font-size: 4rem;
+            cursor: pointer;
+            color: #444;
+            display: none;
+        }
+
+        .header .navbar #close-navbar:hover {
+            transform: rotate(90deg);
+        }
+
+        .header .btn {
+            padding: 8px 30px;
+            border-radius: 50px;
+        }
+
+        #menu-btn {
+            color: rgb(0, 0, 0);
+            font-size: 3.5rem;
+            padding: .5rem 1.2rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* end */
+
+        /* banner */
+        .banner {
+            background-image: url('images/banner1.avif');
+            background-size: cover;
+            background-position: center;
+            height: 30vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            filter: blur(0.7px);
+            margin-top: 90px;
+            /* -webkit-filter: blur(1px); */
+        }
+
+        .banner-con h1 {
+            font-size: 6.5em;
+            filter: none;
+            color: #ffffff;
+            font-weight: bolder;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(36, 36, 36, 0.5);
+            z-index: 1;
+        }
+
+
+        @media (max-width: 1200px) {
+            .banner-con h1 {
+                font-size: 6.5em;
+
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banner-con h1 {
+                font-size: 5.5em;
+
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner-con h1 {
+                font-size: 8em;
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            background: var(--Yellow);
+            color: rgb(77, 77, 77);
+            padding: .8rem 3rem;
+            border: .3rem solid var(--Yellow);
+            cursor: pointer;
+            font-size: 1.7rem;
+            border-radius: .5rem;
+        }
+
+        .btn:hover {
+            color: var(--Yellow);
+            background: var(--gray);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* location */
+         .mainheading{
+            font-size: 6em;
+            text-align: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: var(--gray);
+            font-weight: bold;
+         }
+        .store-list {
+    margin-top: 20px;
+    max-height: 80vh; 
+    overflow-y: auto;
+}
+
+.store-item {
+    border-bottom: 1px solid var(--gray);
+    padding: 10px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+}
+
+.store-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.store-item div {
+    flex: 1;
+}
+
+#map {
+    height: 65vh;
+    width: 98%;
+    background-color: #7e6c6c;
+}
+
+#details-panel {
+    margin-top: 20px;
+}
+
+.stars {
+    color: gold;
+}
+
+#store-images img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+.petshopheading{
+    color: rgb(26, 25, 25);
+    font-size: 2em;
+    text-transform: capitalize;
+}
+p{
+    color: rgb(172, 170, 170);
+    font-size: 1.7em;
+}
+
+        /* footer */
+
+
+        .footer {
+            background-color: #fff;
+            padding: 20px 0;
+        }
+
+        .footercontainer {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .logoimg {
+            height: 100px;
+            width: 220px;
+        }
+
+        .footer-column {
+            flex: 1;
+            margin: 10px;
+            min-width: 200px;
+        }
+
+        .footer-column p {
+            font-size: 16px;
+        }
+
+        .footer-column h2 {
+            color: black;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bolder;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+
+        .footer-column ul li {
+            margin-bottom: 8px;
+
+        }
+
+        .footer-column ul li a {
+    font-size: 18.5px;
+    text-decoration: none;
+    color: var(--gray);
+    line-height: 1.5;
+
+}
+
+        .footer-column ul li a:hover {
+            font-size: 19px;
+            text-decoration: double;
+            color: black;
+            font-weight: bold;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 45px;
+            height: 39px;
+            background-color: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--Yellow);
+        }
+
+
+        .social-icons a:hover {
+            background-color: var(--Yellow);
+            color: var(--gray);
+        }
+
+        #icon {
+            font-size: 25px;
+        }
+
+        .instagram-photos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .instagram-photos img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .footercontainer {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+
+
+
+        .credit {
+            font-size: 1.8rem;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-align: center;
+            border-top: .1rem solid #666;
+            padding: 1rem;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            color: var(--Yellow);
+            background-color: var(--gray);
+        }
+
+        /* end */
+
+
+
+
+
+
+        @media(max-width:991px) {
+            html {
+                font-size: 55%;
+            }
+
+            .header {
+                padding: 2rem;
+            }
+
+            section {
+                padding: 2rem;
+            }
+
+        }
+
+        @media(max-width:768px) {
+            #menu-btn {
+                display: inline-block;
+            }
+
+            .header .navbar {
+                position: fixed;
+                top: 0;
+                left: -105%;
+                width: 30rem;
+                background: #fff;
+                height: 100%;
+                display: flex;
+                flex-flow: column;
+                justify-content: center;
+                z-index: 1200;
+            }
+
+            .header .navbar.active {
+                left: 0;
+                box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.8);
+            }
+
+            .header .navbar #close-navbar {
+                display: block;
+            }
+
+            .header .navbar a {
+                display: block;
+                margin: 1rem 0;
+                text-align: center;
+                font-size: 3rem;
+            }
+        }
+
+        @media(max-width:450px) {
+            html {
+                font-size: 50%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <i class="fa-solid fa-ellipsis" id="chatBtn"></i>
+    <div id="chatContainer" class="chat-container">
+        <div id="chatBox" class="chat-box"></div>
+        <div class="ipbt">
+            <input type="text" id="userInput" placeholder="Type Your Message In Inverted Commas">
+            <i class="fa-solid fa-paper-plane" style="color: rgb(255, 208, 0);" id="sendBtn"></i>
+        </div>
+    </div>
+
+    <!-- header section starts -->
+
+    <header class="header" >
+
+        <div id="menu-btn" class="fas fa-bars"></div>
+
+        <a href="#" class="logo"><img src="images/logo2.png" alt=""></a>
+        <nav class="navbar">
+            <div id="close-navbar" class="fas fa-times"></div>
+            <a href="index.html">Home</a>
+            <a href="aboutus.html">About</a>
+            <div class="dropdown">
+                <a>Animals</a>
+                <div class="dropdown-content">
+                    <a href="petfinder.html">Pet Finder</a>
+                    <a href="catfacts.html">Cat Facts</a>
+                    <a href="randomcatimages.html">Random Cat images</a>
+                    <a href="dogimages.html">Random Dog images</a>
+                </div>
+            </div>
+            <a href="blog.html">Blogs</a>
+            <a href="contactus.html">Contact</a>
+            <a href="location.html">Location</a>
+        </nav>
+
+        <a href="index.html" class="btn">Back </a>
+
+    </header>
+
+    <!-- banner -->
+    <div class="banner">
+        <div class="banner-con">
+            <div class="overlay"></div>
+            <h1>LOCATION</h1>
+        </div>
+    </div>
+    <!-- end -->
+<br><br><br>
+<h1 class="mainheading">PET SHOPS</h1>
+<br><br><br>
+    <!-- location -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="store-list">
+                    <div class="store-item" onclick="showDetails('rpk')">
+                        <img src="images/rpk1.jpg" alt="RPK Pets Mart" class="store-img">
+                        <div>
+                            <h5 class="petshopheading">RPK Pets Mart</h5>
+                            <p>4.2 <span class="stars">☆☆☆☆</span>☆ (85) - Pet store</p>
+                            <p>13.4 km - Rpk Pets Mart, Plot No. 8-C, La...</p>
+                            <p><span style="color: rgb(0, 148, 0);">Open 24 hours</span> &nbsp;<span>03452228426</span></p>
+                            <p>In-store shopping • Kerbside pickup • Delivery</p>
+                        </div>
+                    </div>
+                    <div class="store-item" onclick="showDetails('karachi')">
+                        <img src="images/rpk1.jpg" alt="Karachi Pet House" class="store-img">
+                        <div>
+                            <h5 class="petshopheading">Karachi Pet House</h5>
+                            <p>4.8 <span class="stars">☆☆☆☆</span>☆ (8) - Pet store</p>
+                            <p>4.8 km - Karachi</p>
+                            <p><span style="color: rgb(0, 148, 0);">Open 24 hours</span> &nbsp;<span>03312993672</span></p>
+                        </div>
+                    </div>
+                    <div class="store-item" onclick="showDetails('Kittens')">
+                        <img src="images/kittens1.jpg" alt="Karachi Pet House" class="store-img">
+                        <div>
+                            <h5 class="petshopheading">Karachi Kittens</h5>
+                            <p>3.7 <span class="stars">☆☆☆</span>☆☆ (3) - Pet store</p>
+                            <p>1.0 km - 5A, 5A 7/27 Nazimabad no.5, Bl...</p>
+                            <p><span style="color: rgb(0, 148, 0);">Open 24 hours</span> &nbsp;<span>03120185643</span></p>
+                        </div>
+                    </div>
+                    <div class="store-item" onclick="showDetails('kpf')">
+                        <img src="images/kpf1.jpg" alt="Karachi Pet House" class="store-img">
+                        <div>
+                            <h5 class="petshopheading ">Karachi Pet Facilities</h5>
+                            <p>4.7 <span class="stars">☆☆☆☆</span>☆ (13) - Pet supply store</p>
+                            <p>2.4 km - Karachi</p>
+                            <p><span style="color: rgb(0, 148, 0);">Open 24 hours</span> &nbsp;<span>03371672687</span></p>
+                        </div>
+                    </div>
+                    <div class="store-item" onclick="showDetails('mnb')">
+                        <img src="images/mnb1.jpg" alt="Karachi Pet House" class="store-img">
+                        <div>
+                            <h5 class="petshopheading">MNB PETS LOVER</h5>
+                            <p>5.0 <span class="stars">☆☆☆☆☆</span> (1) - Pet store</p>
+                            <p>6.5 km - R-5 block 19, 19 Block</p>
+                            <p><span style="color: rgb(0, 148, 0);">Open 24 hours</span> &nbsp;<span>03313738094</span></p>
+                        </div>
+                    </div>
+                    <div class="store-item" onclick="showDetails('world')">
+                        <img src="images/world1.jpg" alt="Karachi Pet House" class="store-img">
+                        <div>
+                            <h5 class="petshopheading">Animal world</h5>
+                            <p>5.0 <span class="stars">☆☆☆☆☆</span> (1) - Bird Shop</p>
+                            <p>4.8 km - jama memon masjid, Shop 11 Sh...</p>
+                            <p><span style="color: rgb(0, 148, 0);">Open 24 hours</span> &nbsp;<span>03132215094</span></p>
+                            <p>In-store shopping</p>
+                        </div>
+                    </div>
+                    <div class="store-item" onclick="showDetails('smchs')">
+                        <img src="images/smchs1.jpg" alt="Pet Master SMCHS" class="store-img">
+                        <div>
+                            <h5 class="petshopheading">Pet Master SMCHS</h5>
+                            <p>4.5 <span class="stars">☆☆☆☆</span>☆ (255) - Pet store</p>
+                            <p>6.4 km - Karachi</p>
+                            <p>Open • Closes 3 am &nbsp;<span>03183862642</span></p>
+                            <p>In-store shopping • Kerbside pickup • Delivery</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div id="map"></div>
+                <div id="details-panel" class="d-none">
+                    <h5 id="store-name" class="petshopheading"></h5>
+                    <p id="store-rating"></p>
+                    <p id="store-address"></p>
+                    <div id="store-images"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br><br><br>
+<hr>
+    <!-- footer section starts -->
+
+    <footer class="footer">
+        <div class="footercontainer" data-aos="fade-up">
+            <div class="footer-column">
+                <img src="images/logo2.png" alt="" class="logoimg">
+                <p>JUNGLE SAFARI provides a platform for animal lovers.</p>
+                <br><br>
+                <div class="social-icons">
+
+                    <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook" id="icon"></i></a>
+                    <a href="https://twitter.com/?lang=en" target="_blank"><i class="fa fa-twitter" id="icon"></i></a>
+                    <a href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest" id="icon"></i></a>
+                    <a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube" id="icon"></i></a>
+
+
+                </div>
+            </div>
+            <div class="footer-column">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contactus.html">Contact</a></li>
+                    <li><a href="donation.html">Donation Form</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h2>Useful Links</h2>
+                <ul>
+                    <li><a href="animalsinfo.html">Find Animals details</a></li>
+                    <li><a href="petfinder.html">Pet Finder</a></li>
+                    <li><a href="catfacts.html">Random Cat Fact</a></li>
+                    <li><a href="randomcatimages.html">Random Cat Images</a></li>
+                    <li><a href="dogimages.html">Random Dog Images</a></li>
+
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h2>Instagram</h2>
+                <div class="instagram-photos">
+                    <a href="https://www.instagram.com/junglesafaari/" target="_blank">
+                    <img src="images/blog4.jpg" alt="Instagram Photo" style="margin: 2px;">
+                    <img src="images/about3.jpg" alt="Instagram Photo" style="margin: 2px;">
+                    <img src="images/blog5.jpg" alt="Instagram Photo" style="margin: 2px;">
+                    <img src="images/blog2.jpg" alt="Instagram Photo" style="margin: 2px;">
+                    <img src="images/animals_3.jpg" alt="Instagram Photo" style="margin: 2px;">
+                    <img src="images/blog1.jpg" alt="Instagram Photo" style="margin: 2px;">
+                </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="credit">
+        <p>© 2024 | JUNGLE SAFARI</p>
+    </div>
+
+    <!-- footer section ends -->
+
+
+
+</body>
+<!-- aos link -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- location script -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOfoQEnSeEMhNmp8NI6ZZGulHloVCIZUA&callback=initMap"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    let navbar = document.querySelector('.header .navbar');
+
+    document.querySelector('#menu-btn').onclick = () => {
+        navbar.classList.add('active');
+    }
+
+    document.querySelector('#close-navbar').onclick = () => {
+        navbar.classList.remove('active');
+    }
+
+    window.onscroll = () => {
+        navbar.classList.remove('active');
+    }
+
+
+
+    AOS.init({
+  duration:800,
+  delay:400
+});
+
+
+// location
+
+let map;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 24.8607, lng: 67.0011 },
+        zoom: 12
+    });
+}
+
+function showDetails(storeId) {
+    const stores = {
+        rpk: {
+            name: 'RPK Pets Mart',
+            rating: '4.2 ☆☆☆☆☆ (85)',
+            address: 'Plot No. 8-C, Lane-11, Ext, DHA Phase 6 Nishat Commercial Area Phase 6 Karachi, 75500',
+            images: [
+                'images/rpk1.jpg',
+                'images/rpk2.jpg',
+                'images/rpk3.jpg'
+            ],
+            location: { lat: 24.7995393, lng: 67.0543184 }
+        },
+        karachi: {
+            name: 'Karachi Pet House',
+            rating: '4.8 ☆☆☆☆☆ (8)',
+            address: 'Karachi, 03312993672',
+            images: [
+                'images/kph1.jpg',
+                'images/kph2.jpg',
+                'images/kph3.jpg'
+            ],
+            location: { lat: 24.9099746, lng: 67.056765 }
+        },
+        Kittens: {
+            name: 'Karachi Kittens',
+            rating: '3.7 ☆☆☆☆☆ (3)',
+            address: 'Karachi, 03120185643',
+            images: [
+                'images/kittens1.jpg',
+                'images/kittens2.jpg',
+                'images/kittens3.jpg'
+            ],
+            location: { lat: 24.9234184, lng: 67.0206815 }
+        },
+        kpf: {
+            name: 'Karachi Pet Facilities',
+            rating: '4.7 ☆☆☆☆☆ (13)',
+            address: 'Karachi, 03371672687',
+            images: [
+                'images/kpf1.jpg',
+                'images/kpf2.png',
+                'images/kpf3.png'
+            ],
+            location: { lat: 24.9031809, lng: 67.0348141 }
+        },
+        mnb: {
+            name: 'MNB PETS LOVER',
+            rating: '5.0 ☆☆☆☆☆ (1)',
+            address: 'Karachi, 03313738094',
+            images: [
+                'images/mnb1.jpg',
+                'images/mnb2.jpg',
+                'images/mnb3.jpg'
+            ],
+            location: { lat: 24.9307323, lng: 67.034906 }
+        },
+        world: {
+            name: 'Animal world',
+            rating: '5.0 ☆☆☆☆☆ (1)',
+            address: 'Karachi, 03132215094',
+            images: [
+                'images/world1.jpg',
+                'images/world2.jpg',
+                'images/world3.jpg'
+            ],
+            location: { lat: 24.8839316, lng: 67.0587781 }
+        },
+        smchs: {
+            name: 'Pet Master SMCHS',
+            rating: '4.5 ☆☆☆☆☆ (255)',
+            address: 'Karachi, 0318 3862642',
+            images: [
+                'images/smchs1.jpg',
+                'images/smchs2.jpg',
+                'images/smchs3.jpg'
+            ],
+            location: { lat: 24.8600, lng: 67.0278742 }
+        }
+    };
+
+    const store = stores[storeId];
+    if (store) {
+        document.getElementById('store-name').textContent = store.name;
+        document.getElementById('store-rating').textContent = store.rating;
+        document.getElementById('store-address').textContent = store.address;
+
+        const imagesContainer = document.getElementById('store-images');
+        imagesContainer.innerHTML = '';
+        store.images.forEach(image => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image;
+            imagesContainer.appendChild(imgElement);
+        });
+
+        const location = new google.maps.LatLng(store.location.lat, store.location.lng);
+        map.setCenter(location);
+        new google.maps.Marker({
+            position: location,
+            map: map,
+            title: store.name
+        });
+
+        document.getElementById('details-panel').classList.remove('d-none');
+        window.scrollTo(0, document.getElementById('details-panel').offsetTop);
+    }
+}
+
+// Initialize the map
+google.maps.event.addDomListener(window, 'load', initMap);
+
+
+
+    // chatbox
+
+    const chatBtn = document.getElementById('chatBtn');
+    const chatContainer = document.getElementById('chatContainer');
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+    const chatBox = document.getElementById('chatBox');
+
+    const animalInfo = {
+        hi: { hi: 'Tell me how can I help you Sir', },
+        hello: { hello: 'Tell me how can I help you Sir', },
+        lion: { living_place: 'Savannas and grasslands', food: 'Carnivorous (meat)', nature: 'Social, fierce, and territorial' },
+        elephant: { living_place: 'Forests and savannas', food: 'Herbivorous (plants)', nature: 'Intelligent, social, and gentle' },
+        gorilla: { living_place: 'Forests', food: 'Herbivorous (plants)', nature: 'Strong, intelligent, and social' },
+        kangaroo: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Social, energetic, and jumping ability' },
+        cheetah: { living_place: 'Grasslands', food: 'Carnivorous (meat)', nature: 'Fast, solitary, and diurnal' },
+        giraffe: { living_place: 'Savannas', food: 'Herbivorous (plants)', nature: 'Tall, social, and gentle' },
+        zebra: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Social, striped, and migratory' },
+        hippopotamus: { living_place: 'Rivers and lakes', food: 'Herbivorous (plants)', nature: 'Social, large, and territorial' },
+        snake: { living_place: 'Various habitats', food: 'Carnivorous (meat)', nature: 'Slithery, solitary, and venomous' },
+        tiger: { living_place: 'Forests', food: 'Carnivorous (meat)', nature: 'Solitary, fierce, and nocturnal' },
+        wolf: { living_place: 'Forests and tundras', food: 'Carnivorous (meat)', nature: 'Social, intelligent, and nocturnal' },
+        chimpanzee: { living_place: 'Forests', food: 'Omnivorous (plants and meat)', nature: 'Intelligent, social, and agile' },
+        crocodile: { living_place: 'Rivers and lakes', food: 'Carnivorous (meat)', nature: 'Solitary, large, and carnivorous' },
+        bear: { living_place: 'Forests and mountains', food: 'Omnivorous (plants and meat)', nature: 'Solitary, strong, and hibernating' },
+        monkey: { living_place: 'Forests', food: 'Omnivorous (plants and meat)', nature: 'Social, agile, and intelligent' },
+        rhinoceros: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Solitary, large, and territorial' },
+        rabbit: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Social, fast, and burrowing' },
+        deer: { living_place: 'Forests', food: 'Herbivorous (plants)', nature: 'Social, gentle, and migratory' },
+        fox: { living_place: 'Forests and grasslands', food: 'Carnivorous (meat)', nature: 'Solitary, cunning, and nocturnal' },
+        cat: { living_place: 'Domestic environments (homes, apartments)', food: 'Carnivorous (meat)', nature: 'Independent, playful, curious, and loyal' },
+        dog: { living_place: 'Domestic environments (homes, apartments)', food: 'Omnivorous (plants and meat)', nature: 'Loyal, friendly, and protective' },
+        parrot: { living_place: 'Tropical forests', food: 'Herbivorous (plants)', nature: 'Social, intelligent, and talkative' },
+    };
+
+   
+    chatBtn.addEventListener('click', () => {
+        chatContainer.style.display = chatContainer.style.display === 'block' ? 'none' : 'block';
+    });
+
+    
+    sendBtn.addEventListener('click', sendMessage);
+
+
+    userInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+   
+    function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        appendMessage(message, 'user');  
+        userInput.value = '';  
+        processUserMessage(message);  
+    }
+
+    // Function to append messages to chat box
+    function appendMessage(message, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+        messageDiv.innerText = message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;  
+    }
+
+    // Function to process user message
+    function processUserMessage(message) {
+        const words = message.toLowerCase().split(' ');
+        let response = "Sorry, I am having trouble understanding you right now. Please try again later.";
+
+        for (let word of words) {
+            if (animalInfo[word]) {
+                response = '';
+                if (message.includes('living place') || message.includes('live')) {
+                    response = `The ${word} lives in ${animalInfo[word].living_place}.`;
+                } else if (message.includes('food') || message.includes('eat')) {
+                    response = `The ${word} is ${animalInfo[word].food}.`;
+                } else if (message.includes('nature')) {
+                    response = `The ${word} is ${animalInfo[word].nature}.`;
+                } else {
+                    response = `Tell Me Sir How Can I Help You.`;
+                }
+                break;
+            }
+        }
+
+        appendMessage(response, 'bot'); 
+    }
+
+</script>
+
+</html>

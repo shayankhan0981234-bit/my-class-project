@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Info Finder</title>
+    <style>
+           :root {
+            --Yellow: rgb(255, 208, 0);
+            --gray: rgb(77, 77, 77);
+            --green: rgb(33, 160, 8);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, rgb(65, 63, 63), rgb(192, 189, 189));
+            /* display: flex;
+             justify-content: center;
+            align-items: center; */
+
+            /* margin: 0;
+            overflow: hidden;
+            transition: background-color 0.5s; */
+        }
+        header .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            background: var(--Yellow);
+            color: rgb(77, 77, 77);
+            padding: .1rem 2rem;
+            border: .3rem solid var(--Yellow);
+            cursor: pointer;
+            font-size: 1.4rem;
+            border-radius: 5rem;
+            text-decoration: none;
+        }
+
+
+        header .btn:hover {
+            color: var(--Yellow);
+            background: var(--gray);
+            font-weight: bold;
+            border: .3rem solid var(--Yellow);
+            color: var(--Yellow);
+        }
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .container {
+            margin-top: 8%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: rgb(77, 77, 77);
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        input {
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 2px solid rgb(77, 77, 77);
+            border-radius: 25px;
+            width: calc(100% - 140px);
+            margin-right: 10px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            z-index: 1;
+        }
+
+        input:focus {
+            border-color: rgb(255, 208, 0);
+            box-shadow: 0 0 10px rgb(230, 207, 109);
+            outline: none;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, var(--Yellow), var(--Yellow));
+            color: rgb(77, 77, 77);
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            z-index: 1;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, rgb(114, 113, 113), rgb(77, 77, 77));
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* New */
+
+        #animalInfo {
+            margin-top: 20px;
+            /* display: flex; */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #animalImage {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        /* End */
+        #animalInfo {
+            margin-top: 20px;
+            /* display: flex; */
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        #animalImage {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        #animalInfo img {
+            flex-shrink: 0;
+        }
+
+        #animalDescription,
+        #animalHabitat,
+        #animalDiet,
+        #animalLifespan {
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            #animalInfo {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            #animalImage {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="index.html" class="btn"> BACK</a>
+    </header>
+    <section>
+        <div class="container">
+            <h1>Animal Information Finder</h1>
+            <input type="text" id="animalInput" placeholder="Enter animal name">
+            <button onclick="getAnimalInfo()">Get Info</button>
+            <div id="animalInfo">
+                <img id="animalImage" src="" alt="Animal Image" style="display:none;">
+                <p id="animalDescription"></p>
+                <p id="animalHabitat"></p>
+                <p id="animalDiet"></p>
+                <p id="animalLifespan"></p>
+            </div>
+        </div>
+    </section>
+    <script>
+        const animalData = {
+            bat: {
+                description: "Bats are mammals known for their ability to fly and use echolocation to navigate.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/6e12c30/2147483647/strip/true/crop/6144x4096+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fe2%2Fc0d2670a43a09b0215bf9f18ba59%2Fwk-mexican-free-tailed-bats-handout-002.jpg",
+                habitat: "Various environments including forests, caves, and urban areas.",
+                diet: "Varies by species; can be insectivorous, frugivorous, or carnivorous.",
+                lifespan: "5-30 years, depending on the species."
+            },
+            fox: {
+                description: "Foxes are small to medium-sized omnivorous mammals belonging to several genera of the family Canidae.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/bcf7744/2147483647/strip/true/crop/2048x1351+0+0/resize/1200x792!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F68%2F74%2Fd3a90102a4dcaa6296a319db769a%2Fla-la-fg-london-fox-1-jpg-20141120",
+                habitat: "Forests, grasslands, mountains, and deserts.",
+                diet: "Omnivorous, eating fruits, insects, and small animals.",
+                lifespan: "3-4 years in the wild, up to 14 years in captivity."
+            },
+            deer: {
+                description: "Deer are hoofed grazing animals known for their antlers which are typically found on males.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/a0fed7b/2147483647/strip/true/crop/5472x3647+0+0/resize/2000x1333!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F9b%2F60%2F8b87fd2f4697be08bb207b9c4a3b%2Fla-photos-1staff-590355-la-summer-pandemic-weekend-catalina-38-ajs.jpg",
+                habitat: "Forests, grasslands, and wetlands.",
+                diet: "Herbivorous, eating grasses, leaves, and shoots.",
+                lifespan: "6-14 years in the wild, up to 20 years in captivity."
+            },
+            moose: {
+                description: "Moose are the largest species in the deer family, recognized by their broad, flat antlers.",
+                image: "https://static01.nyt.com/images/2023/11/29/multimedia/29xp-moose-kqmv/29xp-moose-kqmv-videoSixteenByNineJumbo1600.jpg",
+                habitat: "Boreal and mixed deciduous forests.",
+                diet: "Herbivorous, eating aquatic plants, leaves, and bark.",
+                lifespan: "15-20 years in the wild."
+            },
+            monkey: {
+                description: "Monkeys are cool animals that look a bit like us! They have tails and live in trees. There are many different kinds of monkeys, each with its own special look.",
+                image: "https://images.pexels.com/photos/1207875/pexels-photo-1207875.jpeg?auto=compress&cs=tinysrgb&w=400",
+                habitat: "Monkeys love to live in warm places with lots of trees. You can find them in jungles, rainforests, and sometimes even in savannas.",
+                diet: "Most monkeys eat fruits, leaves, and yummy insects. Some bigger monkeys might even eat small animals.",
+                lifespan: "Monkeys can live for a long time, sometimes up to 30 years or more."
+            },
+            crocodile: {
+                description: "Crocodiles are large aquatic reptiles that live throughout the tropics in Africa, Asia, the Americas, and Australia.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/95d170e/2147483647/strip/true/crop/2400x1600+0+0/resize/2000x1333!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc9%2F73%2Fdb1be6b14a32a5de93438b638150%2F954939-sci-0506-reggie-the-alligator-008-ik.jpg",
+                habitat: "Freshwater habitats like rivers, lakes, wetlands, and sometimes brackish water.",
+                diet: "Carnivorous, eating fish, birds, and mammals.",
+                lifespan: "30-40 years in the wild, up to 70 years in captivity."
+            },
+            camel: {
+                description: "Camels are large, desert-dwelling ungulates known for their humps which store fat.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/1388cd4/2147483647/strip/true/crop/600x399+0+0/resize/1200x798!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb4%2F80%2F356d062a857724862e016793335d%2Fla-fi-mh-camel-20131018-001",
+                habitat: "Deserts and arid regions.",
+                diet: "Herbivorous, eating dry grasses, grains, and vegetation.",
+                lifespan: "40-50 years."
+            },
+            peacock: {
+                description: "Peacocks are large, colorful pheasants known for their iridescent tail feathers.",
+                image: "https://static01.nyt.com/images/2021/06/07/lens/07xp-peacock-photo2/07xp-peacock-photo2-superJumbo.jpg",
+                habitat: "Forests, farmlands, and savannas.",
+                diet: "Omnivorous, eating seeds, insects, and small creatures.",
+                lifespan: "15-20 years in the wild."
+            },
+            hummingbird: {
+                description: "Hummingbirds are small birds known for their ability to hover and their rapid wing flapping.",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAW7UkT3VnZa8MCFKdUPGXh-IqhXgcu4hIQsRqocg22ErbdEONHx0sj_Nf25bmbwtbt6Q&usqp=CAU",
+                habitat: "Various environments, from tropical forests to temperate gardens.",
+                diet: "Nectar, small insects, and spiders.",
+                lifespan: "3-5 years in the wild, up to 9 years in captivity."
+            },
+            armadillo: {
+                description: "Armadillos are small to medium-sized mammals known for their armored shells.",
+                image: "https://images.theconversation.com/files/230310/original/file-20180801-136649-j9ot7h.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=754&fit=clip",
+                diet: "Omnivorous, eating insects, plants, and small vertebrates.",
+                lifespan: "7-20 years."
+            },
+            snake: {
+                description: "Snakes are elongated, legless reptiles with a wide range of species found worldwide.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/e71b31e/2147483647/strip/true/crop/2950x2095+0+0/resize/1200x852!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fff%2F42%2F5794fb6d4171b1fcb7a989324ff7%2Fgettyimages-1408459027.jpg",
+                habitat: "Various habitats including forests, deserts, and wetlands.",
+                diet: "Carnivorous, eating rodents, birds, and other small animals.",
+                lifespan: "9-20 years in the wild, depending on the species."
+            },
+            lizard: {
+                description: "Lizards are a widespread group of squamate reptiles, with over 6,000 species.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/80551f4/2147483647/strip/true/crop/400x286+0+0/resize/1200x858!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc9%2Fd9%2F067c95936a78cf48d749c6617630%2Fla-os-lizard30dec30-hknuenkf",
+                habitat: "Various habitats including deserts, forests, and urban areas.",
+                diet: "Omnivorous, eating insects, plants, and small animals.",
+                lifespan: "1-20 years, depending on the species."
+            },
+            alligator: {
+                description: "Alligators are large reptiles known for their broad snouts and inhabit freshwater environments.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/fbc4f16/2147483647/strip/true/crop/4500x2999+0+0/resize/2000x1333!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F03%2F6e%2Ff2251bae4c4db79b13fcd68a35b7%2F954939-sci-0506-reggie-the-alligator-002-ik.jpg",
+                habitat: "Freshwater environments such as rivers, lakes, and swamps.",
+                diet: "Carnivorous, eating fish, birds, and mammals.",
+                lifespan: "35-50 years in the wild, up to 65 years in captivity."
+            },
+            cheetah: {
+                description: "Cheetahs are large cats known for their incredible speed, making them the fastest land animals.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/7b69d61/2147483647/strip/true/crop/1025x765+0+0/resize/1200x896!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fbf%2Fb0%2Fb5bcfa6f29c829e602920cec1f88%2Fla-1474517972-snap-photo",
+                habitat: "Grasslands, savannas, and open forests.",
+                diet: "Carnivorous, eating antelopes, hares, and birds.",
+                lifespan: "10-12 years in the wild, up to 20 years in captivity."
+            },
+            rattlesnake: {
+                description: "Rattlesnakes are venomous snakes known for the distinctive rattle at the end of their tails.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/4f2445e/2147483647/strip/true/crop/7023x4681+0+26/resize/2000x1333!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fdc%2Fe2%2Ff100df5e493491268703f6ccd77e%2F1423617-me-0318-california-rattlesnakes-cmh-03.jpg",
+                habitat: "Deserts, grasslands, and forests.",
+                diet: "Carnivorous, eating small mammals, birds, and reptiles.",
+                lifespan: "10-25 years."
+            },
+            frog: {
+                description: "Frogs are amphibians known for their jumping abilities, croaking sounds, and smooth skin.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/8f34a31/2147483647/strip/false/crop/5027x2828+0+259/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fdb%2Fb7%2F9561176b4486a07ca8fcb7dfda99%2Fsouthern-mountain-yellow-legged-frog-photo-courtesy-of-los-angeles-zoo.jpg",
+                habitat: "Various habitats including forests, wetlands, and grasslands.",
+                diet: "Carnivorous, eating insects, small animals, and other invertebrates.",
+                lifespan: "10-12 years."
+            },
+            raccoon: {
+                description: "Raccoons are medium-sized mammals known for their dexterous front paws and facial mask-like markings.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/6b50285/2147483647/strip/true/crop/600x315+0+43/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fea%2Fb3%2F053faf0207e82f6a33fa4e18f143%2Fla-how-to-stop-raccoons-from-digging-up-sod-tr-001",
+                habitat: "Forests, wetlands, and urban areas.",
+                diet: "Omnivorous, eating fruits, insects, and small animals.",
+                lifespan: "2-3 years in the wild, up to 20 years in captivity."
+            },
+            coyote: {
+                description: "Coyotes are versatile canines known for their adaptability and distinctive howling.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/4715f3d/2147483647/strip/true/crop/3600x2397+0+0/resize/1200x799!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F26%2F9c%2F1f749ac6477abf255b7a92f13de5%2Ftn-dpt-me-fairview-park-wildart-birds-coyotes-6.jpg",
+                habitat: "Deserts, grasslands, and urban areas.",
+                diet: "Omnivorous, eating fruits, insects, and small animals.",
+                lifespan: "6-8 years in the wild, up to 14 years in captivity."
+            },
+            goat: {
+                description: "Goats are domesticated mammals known for their agility, milk production, and beards.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/6ba292a/2147483647/strip/true/crop/374x480+0+0/resize/1200x1540!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F8c%2F44%2F5db6ef2749c0b70d35da7ca48e12%2Fimg-4509.jpeg",
+                habitat: "Mountains, grasslands, and farms.",
+                diet: "Herbivorous, eating grasses, leaves, and shrubs.",
+                lifespan: "15-18 years."
+            },
+            toad: {
+                description: "Toads are amphibians known for their warty skin and preference for drier habitats compared to frogs.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/7be5afb/2147483647/strip/true/crop/1200x791+0+0/resize/2000x1318!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F6a%2F28%2F01c0f58745979114c3003b7d8abd%2Fla-me-frogs-to-yosemite-002.jpg",
+                habitat: "Forests, grasslands, and gardens.",
+                diet: "Carnivorous, eating insects, spiders, and other small invertebrates.",
+                lifespan: "10-12 years."
+            },
+            pig: {
+                description: "Pigs are domesticated mammals known for their intelligence, social behavior, and omnivorous diet.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/3bc0949/2147483647/strip/false/crop/1024x576+0+94/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc9%2Fd6%2Fea65f1f44da096322870a04a7dae%2Fla-me-pickes-piglet-003.JPG",
+                habitat: "Farms, grasslands, and forests.",
+                diet: "Omnivorous, eating fruits, vegetables, and small animals.",
+                lifespan: "15-20 years."
+            },
+            cobra: {
+                description: "Cobras are venomous snakes known for their hooded necks and intimidating stance when threatened.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/cd62baa/2147483647/strip/true/crop/2048x1075+0+38/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff6%2Fcb%2Fdd38d017eed3489080a3dee705d9%2Fla-mmartin-1482270621-snap-photo",
+                habitat: "Forests, grasslands, and urban areas.",
+                diet: "Carnivorous, eating small mammals, birds, and other reptiles.",
+                lifespan: "20 years."
+            },
+            salamander: {
+                description: "Salamanders are amphibians characterized by their lizard-like appearance and ability to regenerate limbs.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/eed7f1e/2147483647/strip/true/crop/600x338+0+31/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F2c%2Fae%2F228109a880e6f1ba75db654af0a9%2Fla-xpm-photo-2012-oct-01-la-fg-mexico-magic-salamander-20121002",
+                habitat: "Forests, wetlands, and grasslands.",
+                diet: "Carnivorous, eating insects, worms, and small invertebrates.",
+                lifespan: "10-20 years."
+            },
+            skunk: {
+                description: "Skunks are small mammals known for their distinctive black-and-white coloration and their ability to spray a foul-smelling liquid.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/777718a/2147483647/strip/true/crop/2048x1075+0+38/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F15%2F92%2F7e3c3f8a23e964aed0d87ee78a2e%2Fla-1503697417-7r5reetxls-snap-image",
+                habitat: "Forests, grasslands, and urban areas.",
+                diet: "Omnivorous, eating insects, small animals, and plants.",
+                lifespan: "7-10 years."
+            },
+            chicken: {
+                description: "Chickens are domesticated birds raised for their eggs, meat, and feathers.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/65afc56/2147483647/strip/true/crop/2048x1445+0+0/resize/1200x847!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F14%2F6f%2F009548a69be0af31cf26efa17943%2Fla-1463099055-snap-photo",
+                habitat: "Farms and rural areas.",
+                diet: "Omnivorous, eating grains, insects, and plants.",
+                lifespan: "5-10 years."
+            },
+            anaconda: {
+                description: "Anacondas are large, non-venomous snakes found in South America, known for their size and strength.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/c1619c2/2147483647/strip/true/crop/2048x1075+0+38/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2F2f%2Ff11eafef960d78e4af0411001005%2Fla-1529151251-p8pw7u0q7r-snap-image",
+                habitat: "Swamps, marshes, and rivers.",
+                diet: "Carnivorous, eating fish, birds, and mammals.",
+                lifespan: "10-12 years in the wild, up to 30 years in captivity."
+            },
+            koala: {
+                description: "Koalas are marsupials native to Australia, known for their tree-dwelling habits and eucalyptus diet.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/94c84e7/2147483647/strip/true/crop/840x472+0+44/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F00%2F29%2F4df3bd9a4329b0cd965c5d774a57%2Fkoalas.jpg",
+                habitat: "Eucalyptus forests.",
+                diet: "Herbivorous, eating eucalyptus leaves.",
+                lifespan: "13-18 years."
+            },
+            octopus: {
+                description: "Octopuses are marine animals known for their intelligence, eight arms, and ability to change color.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/cb2ac38/2147483647/strip/false/crop/2048x1340+0+0/resize/1486x972!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa8%2F58%2Fce26b29a0190c0e0e03bbf013759%2Fla-oe-montgomery-octopuses-arent-monsters-2015-001",
+                habitat: "Oceans, especially coral reefs and seabeds.",
+                diet: "Carnivorous, eating crabs, fish, and other small marine animals.",
+                lifespan: "1-5 years."
+            },
+            otter: {
+                description: "Otters are semi-aquatic mammals known for their playful behavior and use of tools to open shells.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/e22f6d1/2147483647/strip/false/crop/3000x2088+0+0/resize/1486x1034!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F73%2Fa9%2F608fe6064610af14a12eef8510d1%2Fcalifornia-sea-otters-47503.jpg",
+                habitat: "Rivers, lakes, and coastal areas.",
+                diet: "Carnivorous, eating fish, crustaceans, and small mammals.",
+                lifespan: "10-15 years in the wild, up to 20 years in captivity."
+            },
+            duck: {
+                description: "Ducks are waterfowl known for their broad bills, webbed feet, and distinctive quacking.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/3285871/2147483647/strip/true/crop/1918x1080+1+0/resize/840x473!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F7d%2F34%2Fa2ce5144403186d5fc4ad11860b8%2Fcardid-final-thumb-two.jpg",
+                habitat: "Lakes, rivers, and wetlands.",
+                diet: "Omnivorous, eating aquatic plants, insects, and small fish.",
+                lifespan: "5-10 years in the wild, up to 20 years in captivity."
+            },
+            python: {
+                description: "Pythons are large, non-venomous snakes found in Africa, Asia, and Australia.",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Python_reticulatus_%D1%81%D0%B5%D1%82%D1%87%D0%B0%D1%82%D1%8B%D0%B9_%D0%BF%D0%B8%D1%82%D0%BE%D0%BD-2.jpg/1200px-Python_reticulatus_%D1%81%D0%B5%D1%82%D1%87%D0%B0%D1%82%D1%8B%D0%B9_%D0%BF%D0%B8%D1%82%D0%BE%D0%BD-2.jpg",
+                habitat: "Rainforests, grasslands, and savannas.",
+                diet: "Carnivorous, eating mammals, birds, and reptiles.",
+                lifespan: "20-30 years."
+            },
+            rhinoceros: {
+                description: "Rhinoceroses are large, thick-skinned herbivores known for their horned snouts.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/5618b01/2147483647/strip/true/crop/1600x900+0+0/resize/1440x810!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F82%2F20%2F45de807581e5df3ecd27c220d8a0%2Fla-20141215-006",
+                habitat: "Grasslands, savannas, and forests.",
+                diet: "Herbivorous, eating grasses, leaves, and shoots.",
+                lifespan: "35-50 years."
+            },
+            polar_bear: {
+                description: "Polar bears are large carnivorous bears found in the Arctic, known for their white fur and powerful swimming abilities.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/c4b5134/2147483647/strip/true/crop/400x300+0+0/resize/1200x900!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F4f%2F91%2Fdf0babb2e4f0d1984fafd4f49ce6%2Fla-sci-bears28nov28-h67m93kf",
+                habitat: "Arctic sea ice, coastal regions, and tundra.",
+                diet: "Carnivorous, eating seals, fish, and other marine animals.",
+                lifespan: "15-20 years in the wild, up to 30 years in captivity."
+            },
+            gorilla: {
+                description: "Gorillas are large primates found in African forests, known for their strength and social structures.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/f351d2e/2147483647/strip/true/crop/5500x2888+0+518/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F6c%2Fb9%2Fc874005242be8d9bab87c9b81f4a%2Fla-zoo-gorilla-94162.jpg",
+                habitat: "Tropical and subtropical forests.",
+                diet: "Herbivorous, eating fruits, leaves, and shoots.",
+                lifespan: "35-40 years in the wild, up to 50 years in captivity."
+            },
+            hippopotamus: {
+                description: "Hippopotamuses are large, mostly herbivorous mammals found in Africa, known for their large mouths and aggressive nature.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/65ee738/2147483647/strip/true/crop/2000x1125+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F5d%2F20%2F1e12fc3d9247f5c5523a5e208d28%2Fla-me-ln-la-zoo-welcomes-new-hippo-20141104-pi-008",
+                habitat: "Rivers, lakes, and wetlands.",
+                diet: "Herbivorous, eating grasses and aquatic plants.",
+                lifespan: "40-50 years."
+            },
+            lobster: {
+                description: "Lobsters are large marine crustaceans known for their long bodies and strong claws.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/db25e6d/2147483647/strip/true/crop/600x401+0+0/resize/1200x802!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F2a%2F23%2Fd7c0c619eb99be8eef0dc2c1623f%2Fla-xpm-photo-2012-nov-12-la-dd-test-kitchen-tips-keeping-lobster-tail-straight-20121111",
+                habitat: "Oceans, especially rocky and sandy bottoms.",
+                diet: "Carnivorous, eating fish, mollusks, and other crustaceans.",
+                lifespan: "20-50 years."
+            },
+            crab: {
+                description: "Crabs are crustaceans known for their hard exoskeleton and pincers.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/78156eb/2147483647/strip/true/crop/1363x945+0+0/resize/1200x832!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F31%2F70%2F522c59996e965a874d027c9bb71e%2Fla-me-ln-red-crabs-20150122-001",
+                habitat: "Oceans, freshwater, and terrestrial environments.",
+                diet: "Omnivorous, eating algae, plankton, and small fish.",
+                lifespan: "3-30 years, depending on the species."
+            },
+            jellyfish: {
+                description: "Jellyfish are gelatinous marine animals known for their tentacles and often painful stings.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/4000ff8/2147483647/strip/true/crop/2726x1817+274+0/resize/2000x1333!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fab%2Ff8%2Fdf8cd0ed4dc28411e2e2a64c3ea4%2F1285935-la-me-weather-6-ajs.jpg",
+                habitat: "Oceans worldwide, from surface waters to deep sea.",
+                diet: "Carnivorous, eating small fish and plankton.",
+                lifespan: "1-3 years."
+            },
+            seahorse: {
+                description: "Seahorses are small marine fish known for their horse-like head and upright swimming posture.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/5c59f6b/2147483647/strip/true/crop/2047x1151+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ffb%2F95%2F485a45c3844c1431681930d75292%2Fla-1562603515-enzl3rr7ja-snap-image",
+                habitat: "Shallow coastal waters and coral reefs.",
+                diet: "Carnivorous, eating small crustaceans and plankton.",
+                lifespan: "1-5 years."
+            },
+            platypus: {
+                description: "Platypuses are semi-aquatic egg-laying mammals native to Australia, known for their duck-bill and webbed feet.",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7nfRSMJe_ZxAwTcUvmW9WIAkMHtGa7n5uIJAPAbUFFHgQbtpNekADQLnDBnAi4DraA-w&usqp=CAU",
+                habitat: "Freshwater rivers and lakes.",
+                diet: "Carnivorous, eating insects, larvae, and shellfish.",
+                lifespan: "10-17 years."
+            },
+            hedgehog: {
+                description: "Hedgehogs are small mammals known for their spiny backs and nocturnal habits.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/cac353c/2147483647/strip/true/crop/1287x676+0+47/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F01%2Fae%2F23c095c53af455e924c9bb02fbae%2Fla-sci-sn-tiny-hedgehog-20140708-001",
+                habitat: "Forests, grasslands, and gardens.",
+                diet: "Omnivorous, eating insects, snails, and plants.",
+                lifespan: "3-7 years in the wild, up to 10 years in captivity."
+            },
+            mole: {
+                description: "Moles are small, burrowing mammals known for their velvety fur and digging ability.",
+                image: "https://i.guim.co.uk/img/media/616eeff1bb7629682710d0e07e3b8b64e955a0f2/0_173_5200_3119/master/5200.jpg?width=620&quality=85&auto=format&fit=max&s=da276eb640423708e2e23907c0a8397f",
+                habitat: "Grasslands, forests, and gardens.",
+                diet: "Carnivorous, eating insects, worms, and other invertebrates.",
+                lifespan: "3-6 years."
+            },
+            hawk: {
+                description: "Hawks are birds of prey known for their sharp talons and keen eyesight.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/e9876a5/2147483647/strip/false/crop/2919x1946+0+0/resize/1486x991!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F71%2F7a%2Fc5121d72409dafde18ed607214bc%2Fred-tailed-hawk-with-flaired-tail-2.jpg",
+                habitat: "Forests, grasslands, and wetlands.",
+                diet: "Carnivorous, eating small mammals, birds, and reptiles.",
+                lifespan: "10-20 years in the wild."
+            },
+            falcon: {
+                description: "Falcons are birds of prey known for their speed, agility, and hunting prowess.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/4a45a2a/2147483647/strip/false/crop/1188x668+0+125/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F8b%2F47%2F7b38bfbf4dba8aea266548ad8690%2Fla-me-grinnell.jpg",
+                habitat: "Various environments, including deserts, forests, and urban areas.",
+                diet: "Carnivorous, eating birds, small mammals, and insects.",
+                lifespan: "12-20 years in the wild."
+            },
+            turkey: {
+                description: "Turkeys are large birds native to North America, known for their fan-shaped tail and wattled neck.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/7a6c7ec/2147483647/strip/true/crop/2081x1646+0+0/resize/1200x949!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fe4%2F24%2F3faf669f4e1e9030f64838b27534%2Fdsc-8062.jpg",
+                habitat: "Forests, grasslands, and wetlands.",
+                diet: "Omnivorous, eating seeds, insects, and small reptiles.",
+                lifespan: "3-5 years in the wild, up to 10 years in captivity."
+            },
+            eagle: {
+                description: "Eagles are large birds of prey known for their powerful build and keen eyesight.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/c9c48aa/2147483647/strip/true/crop/3600x2025+0+173/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F00%2F60%2Fb64ceb85463f8b44786e1c2308e7%2Fla-photos-1staff-547777-la-me-bald-eagles-7-ajs.jpg",
+                habitat: "Forests, mountains, and coastal regions.",
+                diet: "Carnivorous, eating fish, birds, and small mammals.",
+                lifespan: "20-30 years in the wild, up to 50 years in captivity."
+            },
+            starfish: {
+                description: "Starfish are marine invertebrates known for their star-shaped body and ability to regenerate limbs.",
+                image: "https://images.seattletimes.com/wp-content/uploads/2017/12/2d0ee7173a8f4c3ba1b84d5a6f5086a5.jpg?d=2040x1360",
+                habitat: "Oceans, especially rocky and sandy substrates.",
+                diet: "Carnivorous, eating mollusks and small marine animals.",
+                lifespan: "5-35 years."
+            },
+            clam: {
+                description: "Clams are bivalve mollusks known for their two-part shells and burrowing behavior.",
+                image: "https://www.latimes.com/projects/pismo-clams/assets/social-share.4c79ca89.jpg",
+                habitat: "Oceans, freshwater, and coastal regions.",
+                diet: "Filter feeders, eating plankton and organic matter.",
+                lifespan: "10-100 years, depending on the species."
+            },
+            garter_snake: {
+                description: "Garter snakes are common, non-venomous snakes found throughout North America.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/08bf690/2147483647/strip/false/crop/3000x1688+0+656/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fba%2F23%2F17dc69cc4b81a7c46b4dd688ec2f%2Flede.jpg",
+                habitat: "Forests, grasslands, and wetlands.",
+                diet: "Carnivorous, eating amphibians, earthworms, and small fish.",
+                lifespan: "2-10 years."
+            },
+            kingfisher: {
+                description: "Kingfishers are small to medium-sized birds known for their bright plumage and fishing abilities.",
+                image: "https://i.dailymail.co.uk/i/pix/scaled/2014/03/13/article-2580254-1C4396E700000578-29_636x382.jpg",
+                habitat: "Rivers, lakes, and coastal regions.",
+                diet: "Carnivorous, eating fish, insects, and small invertebrates.",
+                lifespan: "6-10 years."
+            },
+            bear: {
+                description: "Bears are large mammals known for their strength and their typically omnivorous diet. They inhabit a variety of environments.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/e495932/2147483647/strip/true/crop/3000x1999+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fde%2F0d%2Ff6041de9468cac87da15984c66db%2Fyellow-bear-relocate-03.jpg",
+                habitat: "Forests, mountains, and polar regions.",
+                diet: "Omnivorous, eating fruits, nuts, insects, and meat.",
+                lifespan: "20-30 years in the wild, up to 40 years in captivity."
+            },
+            chimpanzee: {
+                description: "Chimpanzees are great apes known for their intelligence, social behavior, and close genetic relationship to humans.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/d199fc3/2147483647/strip/false/crop/4956x2940+0+0/resize/1486x882!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F06%2F21%2F6919e4b9478c8af97b7277811749%2Fchimp-haven-shoot-42.JPG",
+                habitat: "Tropical forests and savannas of Africa.",
+                diet: "Omnivorous, eating fruits, leaves, and small animals.",
+                lifespan: "33-38 years in the wild, up to 50 years in captivity."
+            },
+            ant: {
+                description: "Ants are social insects known for their complex colonies and cooperative behavior.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/48488cf/2147483647/strip/true/crop/1024x874+0+0/resize/1200x1024!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F45%2F1f%2F1259947194a89edfffbfbe3937df%2Fla-sci-sn-ant-tree-sap-protect-rain-leaves-201-001",
+                habitat: "Various environments including forests, grasslands, and urban areas.",
+                diet: "Omnivorous, eating plants, fungi, and other insects.",
+                lifespan: "Few weeks to several years, depending on the species."
+            },
+            spider: {
+                description: "Spiders are arachnids known for their silk webs and diverse range of species.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/e03430f/2147483647/strip/true/crop/3554x2369+0+12/resize/2000x1333!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F5e%2F52%2F31b60d5c4542a8d42a68f2090cd7%2Fla-env-tarantula-005.jpg",
+                habitat: "Various environments including forests, grasslands, and urban areas.",
+                diet: "Carnivorous, eating insects and other small animals.",
+                lifespan: "1-3 years, some species up to 25 years."
+            },
+            butterfly: {
+                description: "Butterflies are insects known for their colorful wings and metamorphosis from caterpillars.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/8586d8b/2147483647/strip/true/crop/4000x2667+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F38%2Fc6%2F805d193f742d4b5b54c65595e497%2F4384d19748ab491fb42a67f5844fc3af",
+                habitat: "Various environments including forests, grasslands, and gardens.",
+                diet: "Herbivorous as caterpillars, adults feed on nectar.",
+                lifespan: "1 week to 1 year, depending on the species."
+            },
+            bee: {
+                description: "Bees are flying insects known for their role in pollination and producing honey and beeswax.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/4714efd/2147483647/strip/true/crop/5568x3712+0+0/resize/2000x1333!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff1%2F6a%2F50cade7c47a786f4db1acdfe5d7a%2Fbumble-bees-protected-as-fish-under-the-endangered-species-act01.JPG",
+                habitat: "Various environments including forests, grasslands, and gardens.",
+                diet: "Herbivorous, feeding on nectar and pollen.",
+                lifespan: "Worker bees live a few weeks to several months, queens up to several years."
+            },
+            sparrow: {
+                description: "Sparrows are small passerine birds known for their adaptability and often found near human habitation.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/342cb4c/2147483647/strip/true/crop/3484x1960+0+256/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F66%2Fa1%2Fbd0f9cd846aa8134c0d904dec83c%2Faud-ca-2024-least-bells-2-vireo-photo-alecia-smith2.jpg",
+                habitat: "Forests, grasslands, and urban areas.",
+                diet: "Omnivorous, eating seeds, insects, and fruits.",
+                lifespan: "3-5 years in the wild, up to 13 years in captivity."
+            },
+            pigeon: {
+                description: "Pigeons are birds known for their homing ability and often found in urban areas.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/7620b79/2147483647/strip/true/crop/586x360+0+0/resize/586x360!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F89%2F04%2F0993c0fb610b15b3b24fedc19821%2Fla-fg-birds01-k7nzjjnc",
+                habitat: "Urban areas, cliffs, and rural environments.",
+                diet: "Omnivorous, eating seeds, fruits, and insects.",
+                lifespan: "3-5 years in the wild, up to 15 years in captivity."
+            },
+            stingray: {
+                description: "Stingrays are cartilaginous fish known for their flattened bodies and long, whip-like tails.",
+                image: "https://www.pierfishing.com/wp-content/uploads/2017/03/Bat.Ray_Fortman.Marina.Pier_2012.1.jpg",
+                habitat: "Oceans, especially coastal waters and coral reefs.",
+                diet: "Carnivorous, eating mollusks, crustaceans, and small fish.",
+                lifespan: "15-25 years."
+            },
+            swan: {
+                description: "Swans are large waterfowl known for their grace, white feathers, and long necks.",
+                image: "https://smbasblog.com/wp-content/uploads/2015/08/swans-mute-1_j-waterman_2015-08-23_img_5219.jpg",
+                habitat: "Lakes, rivers, and wetlands.",
+                diet: "Herbivorous, eating aquatic plants and algae.",
+                lifespan: "10-20 years in the wild, up to 30 years in captivity."
+            },
+            eel: {
+                description: "Eels are elongated fish known for their snake-like bodies and various habitats.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/dd5e8f7/2147483647/strip/false/crop/720x720+0+0/resize/720x720!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F81%2F40%2F323b96ee37c06caf0b575ca12774%2Fla-sci-sn-electric-eel-bioinspired-20151028-001",
+                habitat: "Oceans, rivers, and lakes.",
+                diet: "Carnivorous, eating fish, invertebrates, and carrion.",
+                lifespan: "6-20 years."
+            },
+            squid: {
+                description: "Squids are marine cephalopods known for their elongated bodies, tentacles, and ink-squirting defense.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/8f57a13/2147483647/strip/true/crop/586x390+0+0/resize/586x390!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F7c%2Fee%2Fe954e2acebeba2f37a2e3561ce87%2Fla-na-fish-05-knk3vhnc.jpg",
+                habitat: "Oceans, from shallow coastal waters to deep sea.",
+                diet: "Carnivorous, eating fish, crustaceans, and other squids.",
+                lifespan: "1-3 years."
+            },
+
+            lion: {
+                description: "The lion is a species in the family Felidae and a member of the genus Panthera. It has a muscular, deep-chested body, short legs, and a large, rounded head.",
+                image: "https://images.pexels.com/photos/730536/pexels-photo-730536.jpeg?auto=compress&cs=tinysrgb&w=400",
+                habitat: "Grasslands, savannas, and open woodlands in Africa.",
+                diet: "Carnivorous, primarily hunting large herbivores.",
+                lifespan: "10-14 years in the wild, up to 20 years in captivity."
+            },
+            tiger: {
+                description: "The tiger is the largest species among the Felidae and classified in the genus Panthera. It is recognized for its pattern of dark vertical stripes on reddish-orange fur.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/7e17cf9/2147483647/strip/true/crop/2048x1152+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F4f%2F4c%2F643a663ba6041efe604dc93c934a%2Fla-1549654078-bwdxdd20o4-snap-image",
+                habitat: "Tropical rainforests, grasslands, and savannas in Asia.",
+                diet: "Carnivorous, preying on large mammals like deer and boar.",
+                lifespan: "10-15 years in the wild, up to 20 years in captivity."
+            },
+            elephant: {
+                description: "Elephants are the largest existing land animals. They are known for their large ears, long trunks, and tusks made of ivory.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/123ef73/2147483647/strip/true/crop/5760x3240+0+300/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F54%2F3c%2Fe771d65a443e87db2438be09d052%2Fbronx-zoo-elephant-lawsuit-03420.jpg",
+                habitat: "Savannas, forests, and grasslands in Africa and Asia.",
+                diet: "Herbivorous, eating grasses, fruits, and leaves.",
+                lifespan: "60-70 years in the wild."
+            },
+            dolphin: {
+                description: "Dolphins are highly intelligent marine mammals known for their playful behavior and advanced communication skills.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/90c0ef8/2147483647/strip/false/crop/5000x3333+0+0/resize/1486x991!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa0%2F2a%2F429e8a883e2dd85c8ff243e9a176%2F73a00f14e82f4600b77662d469e8a083",
+                habitat: "Oceans and coastal waters around the world.",
+                diet: "Carnivorous, feeding on fish and squid.",
+                lifespan: "20-60 years depending on the species."
+            },
+            parrot: {
+                description: "Parrots are colorful birds known for their intelligence, ability to mimic sounds, and vibrant feathers.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/234bf38/2147483647/strip/true/crop/1651x1965+0+0/resize/1200x1428!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F7a%2Fbd%2Ffcf183cc43f696948af8c14db9ed%2F1238479-wk-loud-parrots-02-cmc.jpg",
+                habitat: "Tropical and subtropical regions, including rainforests.",
+                diet: "Omnivorous, consuming fruits, nuts, seeds, and sometimes insects.",
+                lifespan: "20-80 years depending on the species."
+            },
+            dog: {
+                description: "Dogs are domesticated mammals and one of the most popular pets worldwide, known for their loyalty and companionship.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/468469e/2147483647/strip/true/crop/5472x2873+0+388/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F7c%2Fd3%2F9642002e4c15b7d94debd0630a97%2F1315505-me-palmdale-animal-shelter-brv-8.jpg",
+                habitat: "Domesticated in various human environments.",
+                diet: "Omnivorous, eating a variety of foods including meat and vegetables.",
+                lifespan: "10-15 years, depending on breed and care."
+            },
+            cat: {
+                description: "Cats are small, carnivorous mammals known for their agility, independence, and affectionate nature towards humans.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/05668ca/2147483647/strip/true/crop/5005x3304+0+0/resize/1200x792!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F0d%2Fa7%2Fe77cd1b64cbea3bd4c973290a416%2Fla-photos-1staff-499902-me-la-me-little-tokyo-feline-mayor-02.FOjpg.jpg",
+                habitat: "Domesticated in human homes, but originally from varied environments.",
+                diet: "Carnivorous, primarily eating meat.",
+                lifespan: "12-20 years, depending on care and breed."
+            },
+            shark: {
+                description: "Sharks are a group of elasmobranch fish characterized by a cartilaginous skeleton, gill slits, and a variety of adaptations for predation.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/b15ad5e/2147483647/strip/true/crop/1280x720+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F24%2Fab%2F8ce16e3d2f91ef52cbf7246d48f0%2Fla-sci-sn-shark-attacks-not-more-frequent-2015-002",
+                habitat: "Oceans, from shallow waters to the deep sea.",
+                diet: "Carnivorous, preying on fish, marine mammals, and other sea creatures.",
+                lifespan: "20-30 years, depending on species."
+            },
+            rabbit: {
+                description: "Rabbits are small, burrowing mammals with long ears and a short, fluffy tail, known for their gentle nature and rapid reproduction.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/27f04fe/2147483647/strip/true/crop/1600x1067+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa9%2F86%2F4a80dcb34212bf7984b8cdfa9cd1%2Friparian-brush-rabbit-photo-by-don-cool2.jpg",
+                habitat: "Varied environments including meadows, forests, and grasslands.",
+                diet: "Herbivorous, eating grass, vegetables, and hay.",
+                lifespan: "8-12 years in captivity."
+            },
+            bear: {
+                description: "Bears are large mammals known for their strength and their typically omnivorous diet. They inhabit a variety of environments.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/f158975/2147483647/strip/true/crop/2400x1600+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F9d%2Fac%2Fe5973e7a4f2390837742ebe90d35%2Fla-photos-1staff-512302-me-0325-bear-arcadia-006-ik-2.JPG",
+                habitat: "Forests, mountains, and polar regions.",
+                diet: "Omnivorous, eating fruits, nuts, insects, and meat.",
+                lifespan: "20-30 years in the wild, up to 40 years in captivity."
+            },
+            wolf: {
+                description: "Wolves are large carnivorous mammals known for their complex social structures and their role as apex predators.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/6757674/2147483647/strip/true/crop/1167x778+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F51%2F9e%2F9b35777f8143c2c72a89265206b9%2F7d6a57a9c13d42a3b9d1ac6a0fafb65a",
+                habitat: "Forests, tundras, and grasslands across North America and Eurasia.",
+                diet: "Carnivorous, hunting large ungulates like deer and elk.",
+                lifespan: "6-8 years in the wild, up to 16 years in captivity."
+            },
+            giraffe: {
+                description: "Giraffes are the tallest land animals, known for their long necks and legs and their distinctive spotted coats.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/d758bf6/2147483647/strip/false/crop/1200x868+0+0/resize/1200x868!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F4e%2Ff9%2F39e5dd564e05a89e9609d43169e3%2Fimage-10-phillip-male-masai-giraffe-with-female-masai-giraffe-calf-photo-by-tad-motoyama.jpg",
+                habitat: "Savannas and open woodlands in Africa.",
+                diet: "Herbivorous, feeding mainly on leaves from acacia trees.",
+                lifespan: "20-25 years in the wild."
+            },
+            zebra: {
+                description: "Zebras are known for their black-and-white striped coats and are native to Africa. They are social animals living in herds.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/9ed7651/2147483647/strip/true/crop/480x252+0+54/resize/1200x630!/quality/75/?url=https%3A%2F%2Fi.ytimg.com%2Fvi%2FwCLez5a3b94%2Fhqdefault.jpg",
+                habitat: "Grasslands, savannas, and woodlands in Africa.",
+                diet: "Herbivorous, grazing on grasses and leaves.",
+                lifespan: "20-30 years in the wild."
+            },
+            kangaroo: {
+                description: "Kangaroos are marsupials from Australia known for their powerful hind legs and their ability to hop long distances.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/c185b66/2147483647/strip/true/crop/1181x787+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F8c%2F63%2F90e5f31e609402ec1d73e8243220%2Fla-sci-sn-left-handed-kangaroos-20150618-001",
+                habitat: "Grasslands, savannas, and forests in Australia.",
+                diet: "Herbivorous, eating grasses and leaves.",
+                lifespan: "6-8 years in the wild, up to 20 years in captivity."
+            },
+            panda: {
+                description: "Pandas are large bears native to China, recognized for their black-and-white fur and their diet primarily consisting of bamboo.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/3a58f69/2147483647/strip/true/crop/6000x3375+0+313/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3f%2F83%2Fc8d6e393af3384f5ae0ed1782ac4%2Fe1552674b58f4ba58542352d12c022f9",
+                habitat: "Mountainous forests in China.",
+                diet: "Primarily herbivorous, eating bamboo.",
+                lifespan: "15-20 years in the wild."
+            },
+            penguin: {
+                description: "Penguins are flightless birds known for their distinctive black-and-white plumage and their ability to swim.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/46b00bf/2147483647/strip/true/crop/1862x1047+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F91%2Fe2%2F2dca737b0786474f56bc2da96768%2Fla-oe-klaas-ipcc-climate-change-national-secur-001",
+                habitat: "Southern Hemisphere, including Antarctica, New Zealand, and South Africa.",
+                diet: "Carnivorous, eating fish, squid, and krill.",
+                lifespan: "15-20 years depending on the species."
+            },
+            seal: {
+                description: "Seals are marine mammals that are known for their streamlined bodies and their ability to thrive both in water and on land.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/d103578/2147483647/strip/true/crop/2048x1361+0+0/resize/1200x797!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F7c%2Fb0%2F531ee9c641ff83710d5706987646%2Fmirounga-angustirostris.jpg",
+                habitat: "Coastal regions and open oceans around the world.",
+                diet: "Carnivorous, feeding on fish, squid, and crustaceans.",
+                lifespan: "15-30 years depending on the species."
+            },
+            turtle: {
+                description: "Turtles are reptiles characterized by their bony or cartilaginous shell, which shields them from predators.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/4741fba/2147483647/strip/true/crop/3609x1895+0+210/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc4%2F06%2F0ae67f4f4098a2c8dc20695f9337%2F43a20b55377446a998e67089ac5c3d51-1.jpg",
+                habitat: "Various environments including oceans, freshwater, and land.",
+                diet: "Varies by species; includes plants, insects, and small animals.",
+                lifespan: "20-100 years depending on the species."
+            },
+            flamingo: {
+                description: "Flamingos are wading birds known for their long legs, necks, and their distinctive pink or reddish plumage.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/4c4bfc9/2147483647/strip/true/crop/2048x1075+0+55/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc4%2F67%2F7fb5be7f33f5dc37c9cc3f758c0b%2Fla-xpm-photo-2013-dec-20-la-me-hollywood-park-flamingos-20131221",
+                habitat: "Shallow lakes, lagoons, and wetlands.",
+                diet: "Filter-feeders, primarily eating algae and small aquatic creatures.",
+                lifespan: "20-30 years in the wild."
+            },
+            owl: {
+                description: "Owls are nocturnal birds of prey known for their distinctive hoots and their ability to rotate their heads.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/44a5400/2147483647/strip/false/crop/7958x4476+0+550/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F85%2F44%2F7482a5f343389c5d4c0717c33f09%2Fla-me-snowy-owl-cypress-rare-birdwatching-rr-20221230-1.jpg",
+                habitat: "Shallow lakes, lagoons, and wetlands.",
+                diet: "Filter-feeders, primarily eating algae and small aquatic creatures.",
+                lifespan: "20-30 years in the wild."
+            },
+            horse: {
+                description: "Horses are large domesticated mammals known for their strength, speed, and their use in riding and work.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/b5a3471/2147483647/strip/true/crop/3000x1872+0+0/resize/1200x749!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ffb%2F5f%2Fbae0ca554b13a1762705950abdaf%2Fap231559439872.jpg",
+                habitat: "Domesticated in various human environments; originally from steppes and grasslands.",
+                diet: "Herbivorous, consuming grasses, grains, and hay.",
+                lifespan: "25-30 years."
+            },
+            cow: {
+                description: "Cows are domesticated cattle known for their role in agriculture, particularly in dairy and meat production.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/d586bfb/2147483647/strip/true/crop/1024x682+0+0/resize/1200x799!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F71%2Ffa%2Fbf35f0afa0033b63039c005348c8%2Fla-fi-rancho-feeding-20150227-001",
+                habitat: "Domesticated in farms and ranches around the world.",
+                diet: "Herbivorous, primarily grazing on grass and consuming feed.",
+                lifespan: "15-20 years."
+            },
+            sheep: {
+                description: "Sheep are domesticated ruminants known for their wool, meat, and their role in pastoral farming.",
+                image: "https://ca-times.brightspotcdn.com/dims4/default/3853fb2/2147483647/strip/true/crop/4839x2722+0+252/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F81%2F97%2F32cee0aa46bbb638bb8669cc2b67%2F1355207-wk-sheep-docent11.jpg",
+                habitat: "Domesticated in farms and pastures globally.",
+                diet: "Herbivorous, eating grasses, leaves, and hay.",
+                lifespan: "10-12 years."
+            }
+        };
+
+        function getAnimalInfo() {
+            const animalName = document.getElementById('animalInput').value.toLowerCase();
+            const infoDiv = document.getElementById('animalInfo');
+            const imageElement = document.getElementById('animalImage');
+            const descriptionElement = document.getElementById('animalDescription');
+            const habitatElement = document.getElementById('animalHabitat');
+            const dietElement = document.getElementById('animalDiet');
+            const lifespanElement = document.getElementById('animalLifespan');
+
+            if (animalData[animalName]) {
+                const animal = animalData[animalName];
+                imageElement.src = animal.image;
+                imageElement.style.display = 'block';
+                descriptionElement.textContent = `Description: ${animal.description}`;
+                habitatElement.textContent = `Habitat: ${animal.habitat}`;
+                dietElement.textContent = `Diet: ${animal.diet}`;
+                lifespanElement.textContent = `Lifespan: ${animal.lifespan}`;
+            } else {
+                imageElement.style.display = 'none';
+                descriptionElement.textContent = '';
+                habitatElement.textContent = '';
+                dietElement.textContent = '';
+                lifespanElement.textContent = 'Animal not found. Please try another name.';
+            }
+        }
+    </script>
+</body>
+
+</html>

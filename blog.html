@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOG</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- ASO LINK -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --Yellow: rgb(255, 208, 0);
+            --gray: rgb(77, 77, 77);
+            --green: rgb(33, 160, 8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+
+
+        html {
+            font-size: 62.5%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            scroll-padding-top: 4rem;
+        }
+
+        html::-webkit-scrollbar {
+            width: 1.3rem;
+        }
+
+        html::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        html::-webkit-scrollbar-thumb {
+            background: var(--Yellow);
+            border-radius: 5rem;
+        }
+
+
+
+
+
+        /* header */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 9%;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+
+        .header .logo img {
+            height: 90px;
+            width: 293px;
+        }
+
+
+        .header .navbar a {
+            color: #333;
+            font-size: 2rem;
+            margin: 0 .8rem;
+            font-weight: bold;
+        }
+
+        .header .navbar a:hover {
+            color: var(--Yellow);
+            font-size: 2.2rem;
+
+        }
+
+
+        .header .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .header .navbar .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 1;
+        }
+
+        .header .navbar .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 1.6rem;
+        }
+
+        .header .navbar .dropdown-content a:hover {
+            background-color: var(--Yellow);
+        }
+
+        .header .navbar .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+
+
+
+        .header .navbar #close-navbar {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            font-size: 4rem;
+            cursor: pointer;
+            color: #444;
+            display: none;
+        }
+
+        .header .navbar #close-navbar:hover {
+            transform: rotate(90deg);
+        }
+
+        .header .btn {
+            padding: 8px 30px;
+            border-radius: 50px;
+        }
+
+        #menu-btn {
+            color: rgb(0, 0, 0);
+            font-size: 3.5rem;
+            padding: .5rem 1.2rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* end */
+
+        /* banner */
+        .banner {
+            background-image: url('images/banner1.avif');
+            background-size: cover;
+            background-position: center;
+            height: 30vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            filter: blur(0.7px);
+            margin-top: 90px;
+            /* -webkit-filter: blur(1px); */
+        }
+
+        .banner-con h1 {
+            font-size: 6.5em;
+            filter: none;
+            color: #ffffff;
+            font-weight: bolder;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(36, 36, 36, 0.5);
+            z-index: 1;
+        }
+
+
+        @media (max-width: 1200px) {
+            .banner-con h1 {
+                font-size: 6.5em;
+
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banner-con h1 {
+                font-size: 5.5em;
+
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner-con h1 {
+                font-size: 8em;
+            }
+        }
+
+
+        /* blog */
+        section {
+            padding: 5rem 10%;
+        }
+
+        .blog .box-container {
+            display: -ms-grid;
+            display: grid;
+            -ms-grid-columns: (minmax(30rem, 1fr))[auto-fit];
+            grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+            gap: 2rem;
+        }
+
+        .blog .box-container .box:hover .image img {
+            transform: scale(1.1);
+        }
+
+        .blog .box-container .box.shadow {
+            box-shadow: 0px 18px 39.1px 6.9px rgba(224, 241, 255, 0.34) !important;
+        }
+
+
+        .blog .box-container .box .image {
+            height: 25rem;
+            overflow: hidden;
+            position: relative;
+
+        }
+
+        .blog .box-container .box .image img {
+            height: 100%;
+            width: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+
+        }
+
+        .blog .box-container .box .image h3 {
+            background-color: #fff;
+            color: #444;
+            position: absolute;
+            top: 2rem;
+            left: 1rem;
+            padding: .5rem 1.5rem;
+            font-size: 4rem;
+            border-radius: 15px;
+        }
+
+        .blog .box-container .box .content {
+            padding: 2rem;
+            background-color: #fff;
+        }
+
+        .blog .box-container .box .content h3 {
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+
+        .blog .box-container .box .content p {
+            font-size: 1.8rem;
+            padding: 1rem 0;
+            line-height: 2;
+            color: #777;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            background: var(--Yellow);
+            color: rgb(77, 77, 77);
+            padding: .8rem 3rem;
+            border: .3rem solid var(--Yellow);
+            cursor: pointer;
+            font-size: 1.7rem;
+            border-radius: .5rem;
+        }
+
+        .btn:hover {
+            color: var(--Yellow);
+            background: var(--gray);
+            font-weight: bold;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 1rem;
+            background: var(--Yellow);
+            color: rgb(77, 77, 77);
+            padding: .8rem 3rem;
+            border: .3rem solid var(--Yellow);
+            cursor: pointer;
+            font-size: 1.7rem;
+            border-radius: .5rem;
+        }
+
+        .read-more:hover {
+            color: var(--Yellow);
+            background: var(--gray);
+            font-weight: bold;
+        }
+
+
+        /* footer */
+
+
+        .footer {
+            background-color: #fff;
+            padding: 20px 0;
+        }
+
+        .footercontainer {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .logoimg {
+            height: 100px;
+            width: 220px;
+        }
+
+        .footer-column {
+            flex: 1;
+            margin: 10px;
+            min-width: 200px;
+        }
+
+        .footer-column p {
+            font-size: 16px;
+        }
+
+        .footer-column h2 {
+            color: black;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bolder;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+
+        .footer-column ul li {
+            margin-bottom: 8px;
+
+        }
+
+        .footer-column ul li a {
+            font-size: 18.5px;
+            text-decoration: none;
+            color: var(--gray);
+            line-height: 1.5;
+
+        }
+
+        .footer-column ul li a:hover {
+            font-size: 19px;
+            text-decoration: double;
+            color: black;
+            font-weight: bold;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 45px;
+            height: 39px;
+            background-color: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--Yellow);
+        }
+
+
+        .social-icons a:hover {
+            background-color: var(--Yellow);
+            color: var(--gray);
+        }
+
+        #icon {
+            font-size: 25px;
+        }
+
+        .instagram-photos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .instagram-photos img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+        }
+
+
+        #chatBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--Yellow);
+            color: var(--gray);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 2;
+        }
+
+        .chat-container {
+            font-size: 15px;
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            max-width: 90%;
+            background-color: rgb(187, 185, 185);
+            border: 2px solid var(--gray);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgb(114, 113, 113);
+            padding: 10px;
+            z-index: 2;
+        }
+
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 2px solid var(--gray);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .message {
+            margin: 10px 0;
+
+        }
+
+        .user {
+            text-align: right;
+            /* align-self: flex-end; */
+            background-color: rgb(243, 209, 59);
+            color: black;
+            padding: 5px;
+            border-radius: 15px;
+
+        }
+
+
+        .bot {
+            text-align: left;
+            background-color: #ffffff;
+            color: black;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 60px);
+            padding: 10px;
+            margin-right: 10px;
+            background-color: rgb(230, 226, 226);
+            border-style: none;
+
+        }
+
+        .ipbt {
+            display: flex;
+
+        }
+
+        #sendBtn {
+            align-items: center;
+            cursor: pointer;
+            font-size: 30px;
+            display: flex;
+        }
+
+
+        @media (max-width: 768px) {
+            .footercontainer {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+
+
+
+        .credit {
+            font-size: 1.8rem;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-align: center;
+            border-top: .1rem solid #666;
+            padding: 1rem;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            color: var(--Yellow);
+            background-color: var(--gray);
+        }
+
+        /* end */
+
+
+
+
+
+
+        @media(max-width:991px) {
+            html {
+                font-size: 55%;
+            }
+
+            .header {
+                padding: 2rem;
+            }
+
+            section {
+                padding: 2rem;
+            }
+
+        }
+
+        @media(max-width:768px) {
+            #menu-btn {
+                display: inline-block;
+            }
+
+            .header .navbar {
+                position: fixed;
+                top: 0;
+                left: -105%;
+                width: 30rem;
+                background: #fff;
+                height: 100%;
+                display: flex;
+                flex-flow: column;
+                justify-content: center;
+                z-index: 1200;
+            }
+
+            .header .navbar.active {
+                left: 0;
+                box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.8);
+            }
+
+            .header .navbar #close-navbar {
+                display: block;
+            }
+
+            .header .navbar a {
+                display: block;
+                margin: 1rem 0;
+                text-align: center;
+                font-size: 3rem;
+            }
+        }
+
+        @media(max-width:450px) {
+            html {
+                font-size: 50%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <i class="fa-solid fa-ellipsis" id="chatBtn"></i>
+    <div id="chatContainer" class="chat-container">
+        <div id="chatBox" class="chat-box"></div>
+        <div class="ipbt">
+            <input type="text" id="userInput" placeholder="Type Your Message In Inverted Commas">
+            <i class="fa-solid fa-paper-plane" style="color: rgb(255, 208, 0);" id="sendBtn"></i>
+        </div>
+    </div>
+
+    <!-- header section starts -->
+
+    <header class="header">
+
+        <div id="menu-btn" class="fas fa-bars"></div>
+
+        <a href="index.html" class="logo"><img src="images/logo2.png" alt=""></a>
+        <nav class="navbar">
+            <div id="close-navbar" class="fas fa-times"></div>
+            <a href="index.html">Home</a>
+            <a href="aboutus.html">About</a>
+            <div class="dropdown">
+                <a>Animals</a>
+                <div class="dropdown-content">
+                    <a href="petfinder.html">Pet Finder</a>
+                    <a href="catfacts.html">Cat Facts</a>
+                    <a href="randomcatimages.html">Random Cat images</a>
+                    <a href="dogimages.html">Random Dog images</a>
+                </div>
+            </div>
+            <a href="blog.html">Blogs</a>
+            <a href="contactus.html">Contact</a>
+            <a href="location.html">Location</a>
+        </nav>
+
+        <a href="index.html" class="btn">Back </a>
+
+    </header>
+
+    <!-- banner -->
+    <div class="banner">
+        <div class="banner-con">
+            <div class="overlay"></div>
+            <h1>OUR BLOG</h1>
+        </div>
+    </div>
+    <!-- end -->
+
+    <!-- blog -->
+    <section class="blog">
+
+
+        <div class="box-container">
+
+            <div class="box shadow" data-aos="fade-right" data-aos-delay="700">
+
+                <div class="image">
+                    <img src="images/blog1.jpg" alt="">
+
+                </div>
+                <div class="content">
+                    <h3>BROWN BEAR</h3>
+                    <p class="summary">The brown bear is a large and strong animal found in North America, Europe, and
+                        Asia.....</p>
+                    <div class="full-description" style="display:none;">
+                        <p>
+                            The brown bear is a large and strong animal found in North America, Europe, and Asia. Its
+                            fur is usually brown, but can be light or dark. Brown bears live in forests, mountains, and
+                            tundras. Adult males can weigh up to 1,500 pounds, while females are smaller. They eat a
+                            variety of foods, including berries, fish, and small animals. In winter, brown bears
+                            hibernate to save energy. They help their environment by controlling animal populations and
+                            spreading seeds. Despite their size, brown bears are smart and can have complex social
+                            behaviors.</p>
+                    </div>
+                    <button class="read-more">Read More →</button>
+                </div>
+
+            </div>
+
+            <div class="box shadow" data-aos="fade-left" data-aos-delay="700">
+
+                <div class="image">
+                    <img src="images/blog2.jpg" alt="">
+                </div>
+                <div class="content">
+                    <h3>INDIAN LEOPARD</h3>
+                    <p class="summary">The Indian leopard is a beautiful and agile big cat found in India and nearby
+                        countries....</p>
+                    <div class="full-description" style="display:none;">
+                        <p>The Indian leopard is a beautiful and agile big cat found in India and nearby countries. It
+                            has a golden-yellow coat with black rosettes and spots that help it blend into its forest
+                            and grassland homes. Leopards are smaller than lions and tigers but are very strong and good
+                            climbers. They mainly eat deer, monkeys, and birds, using their stealth and strength to
+                            catch prey. These cats are solitary, meaning they live alone except during mating or when a
+                            mother is raising her cubs. Indian leopards are crucial for their ecosystem, keeping animal
+                            populations balanced and healthy.
+
+                        </p>
+                    </div>
+                    <button class="read-more">Read More →</button>
+                </div>
+
+            </div>
+
+            <div class="box shadow" data-aos="fade-right" data-aos-delay="700">
+
+                <div class="image">
+                    <img src="images/blog3.jpeg" alt="">
+                </div>
+                <div class="content">
+                    <h3>ZEBRAS</h3>
+                    <p class="summary">Zebras are fascinating animals known for their distinctive black and white
+                        stripes . They live in ....</p>
+                    <div class="full-description" style="display:none;">
+                        <p>Zebras are fascinating animals known for their distinctive black and white stripes. They live
+                            in Africa and are closely related to horses and donkeys. Zebras are herbivores, which means
+                            they eat plants, mainly grass. Their unique stripes help them blend into their surroundings
+                            and confuse predators like lions. Each zebra's stripe pattern is different, making them as
+                            unique as human fingerprints. Zebras are social animals and live in groups called herds.
+                            They communicate with each other using sounds and facial expressions. Zebras can run fast to
+                            escape danger and are known for their strong sense of family and community.</p>
+                    </div>
+                    <button class="read-more">Read More →</button>
+                </div>
+
+            </div>
+
+            <div class="box shadow" data-aos="fade-left" data-aos-delay="700">
+
+                <div class="image">
+                    <img src="images/blog4.jpg" alt="">
+                </div>
+                <div class="content">
+                    <h3>MONKEY</h3>
+                    <p class="summary">
+                        Monkeys are clever and playful animals that live in many parts of the world, especially in
+                        forests and jungles....</p>
+                    <div class="full-description" style="display:none;">
+                        <p>Monkeys are clever and playful animals that live in many parts of the world, especially in
+                            forests and jungles. They have long tails and are very good at climbing trees. Monkeys eat a
+                            variety of foods, including fruits, leaves, and insects. They are known for their curious
+                            nature and love to explore their surroundings. Monkeys are social animals and live in groups
+                            called troops. They communicate with each other using sounds, facial expressions, and
+                            gestures. Some monkeys, like chimpanzees, are very intelligent and can use simple tools.
+                            Monkeys are fascinating to watch because of their energetic and playful behavior.</p>
+                    </div>
+                    <button class="read-more">Read More →</button>
+                </div>
+            </div>
+
+            <div class="box shadow" data-aos="fade-right" data-aos-delay="700">
+
+                <div class="image">
+                    <img src="images/blog5.jpg" alt="">
+                </div>
+                <div class="content">
+                    <h3>PARROT</h3>
+                    <p class="summary">Parrots are colorful and intelligent birds found in tropical and subtropical
+                        regions. They have bright feathers in colors...</p>
+                    <div class="full-description" style="display:none;">
+                        <p>Parrots are colorful and intelligent birds found in tropical and subtropical regions. They
+                            have bright feathers in colors like green, red, blue, and yellow. Parrots are known for
+                            their ability to mimic sounds and even human speech. They eat a variety of foods, including
+                            seeds, nuts, fruits, and vegetables. Parrots have strong beaks that help them crack open
+                            hard shells. They are social creatures and often live in flocks. Parrots use their feet to
+                            hold food and their beaks to climb. They are playful and enjoy interacting with people.
+                            Their intelligence and vibrant colors make them popular pets worldwide.</p>
+                    </div>
+                    <button class="read-more">Read More →</button>
+                </div>
+
+            </div>
+
+            <div class="box shadow" data-aos="fade-left" data-aos-delay="700">
+
+                <div class="image">
+                    <img src="images/blog6.jpg" alt="">
+                </div>
+                <div class="content">
+                    <h3>KANGAROO</h3>
+                    <p class="summary">Kangaroos are unique animals found mainly in Australia. They are known for their
+                        powerful hind legs and long tails.....</p>
+                    <div class="full-description" style="display:none;">
+                        <p>Kangaroos are unique animals found mainly in Australia. They are known for their powerful
+                            hind legs and long tails, which help them jump great distances. Kangaroos have a special way
+                            of moving called hopping. They carry their babies, called joeys, in pouches on their
+                            bellies. Kangaroos are herbivores, eating mostly grass and leaves. They live in groups
+                            called mobs. With their strong legs, they can travel quickly and escape predators. Kangaroos
+                            are also good swimmers. They are most active during early morning and late afternoon. These
+                            fascinating animals are an important symbol of Australian wildlife.</p>
+                    </div>
+                    <button class="read-more">Read More →</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- footer section starts -->
+
+    <footer class="footer">
+        <div class="footercontainer" data-aos="fade-up">
+            <div class="footer-column">
+                <a href="index.html"> <img src="images/logo2.png" alt="" class="logoimg"></a>
+                <p>JUNGLE SAFARI provides a platform for animal lovers.</p>
+                <br><br>
+                <div class="social-icons">
+
+                    <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook" id="icon"></i></a>
+                    <a href="https://twitter.com/?lang=en" target="_blank"><i class="fa fa-twitter" id="icon"></i></a>
+                    <a href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest" id="icon"></i></a>
+                    <a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube" id="icon"></i></a>
+
+
+                </div>
+            </div>
+            <div class="footer-column">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contactus.html">Contact</a></li>
+                    <li><a href="donation.html">Donation Form</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h2>Useful Links</h2>
+                <ul>
+                    <li><a href="animalsinfo.html">Find Animals details</a></li>
+                    <li><a href="petfinder.html">Pet Finder</a></li>
+                    <li><a href="catfacts.html">Random Cat Fact</a></li>
+                    <li><a href="randomcatimages.html">Random Cat Images</a></li>
+                    <li><a href="dogimages.html">Random Dog Images</a></li>
+
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h2>Instagram</h2>
+                <div class="instagram-photos">
+                    <a href="https://www.instagram.com/junglesafaari/" target="_blank">
+                        <img src="images/blog4.jpg" alt="Instagram Photo" style="margin: 2px;">
+                        <img src="images/about3.jpg" alt="Instagram Photo" style="margin: 2px;">
+                        <img src="images/blog5.jpg" alt="Instagram Photo" style="margin: 2px;">
+                        <img src="images/blog2.jpg" alt="Instagram Photo" style="margin: 2px;">
+                        <img src="images/animals_3.jpg" alt="Instagram Photo" style="margin: 2px;">
+                        <img src="images/blog1.jpg" alt="Instagram Photo" style="margin: 2px;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="credit">
+        <p>© 2024 | JUNGLE SAFARI</p>
+    </div>
+
+    <!-- footer section ends -->
+
+
+
+</body>
+<!-- aos link -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    let navbar = document.querySelector('.header .navbar');
+
+    document.querySelector('#menu-btn').onclick = () => {
+        navbar.classList.add('active');
+    }
+
+    document.querySelector('#close-navbar').onclick = () => {
+        navbar.classList.remove('active');
+    }
+
+    window.onscroll = () => {
+        navbar.classList.remove('active');
+    }
+
+
+
+    AOS.init({
+        duration: 800,
+        delay: 400
+    });
+    //    blog
+    document.addEventListener('DOMContentLoaded', () => {
+        const readMoreButtons = document.querySelectorAll('.read-more');
+
+        readMoreButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const fullDescription = button.previousElementSibling;
+                const summary = button.parentElement.querySelector('.summary');
+
+                if (fullDescription.style.display === 'none' || fullDescription.style.display === '') {
+                    fullDescription.style.display = 'block';
+                    summary.style.display = 'none';
+                    button.textContent = 'Read Less ←';
+                } else {
+                    fullDescription.style.display = 'none';
+                    summary.style.display = 'block';
+                    button.textContent = 'Read More →';
+                }
+            });
+        });
+    });
+
+
+
+
+    // chatbox
+
+    const chatBtn = document.getElementById('chatBtn');
+    const chatContainer = document.getElementById('chatContainer');
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+    const chatBox = document.getElementById('chatBox');
+
+    const animalInfo = {
+        hi: { hi: 'Tell me how can I help you Sir', },
+        hello: { hello: 'Tell me how can I help you Sir', },
+        lion: { living_place: 'Savannas and grasslands', food: 'Carnivorous (meat)', nature: 'Social, fierce, and territorial' },
+        elephant: { living_place: 'Forests and savannas', food: 'Herbivorous (plants)', nature: 'Intelligent, social, and gentle' },
+        gorilla: { living_place: 'Forests', food: 'Herbivorous (plants)', nature: 'Strong, intelligent, and social' },
+        kangaroo: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Social, energetic, and jumping ability' },
+        cheetah: { living_place: 'Grasslands', food: 'Carnivorous (meat)', nature: 'Fast, solitary, and diurnal' },
+        giraffe: { living_place: 'Savannas', food: 'Herbivorous (plants)', nature: 'Tall, social, and gentle' },
+        zebra: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Social, striped, and migratory' },
+        hippopotamus: { living_place: 'Rivers and lakes', food: 'Herbivorous (plants)', nature: 'Social, large, and territorial' },
+        snake: { living_place: 'Various habitats', food: 'Carnivorous (meat)', nature: 'Slithery, solitary, and venomous' },
+        tiger: { living_place: 'Forests', food: 'Carnivorous (meat)', nature: 'Solitary, fierce, and nocturnal' },
+        wolf: { living_place: 'Forests and tundras', food: 'Carnivorous (meat)', nature: 'Social, intelligent, and nocturnal' },
+        chimpanzee: { living_place: 'Forests', food: 'Omnivorous (plants and meat)', nature: 'Intelligent, social, and agile' },
+        crocodile: { living_place: 'Rivers and lakes', food: 'Carnivorous (meat)', nature: 'Solitary, large, and carnivorous' },
+        bear: { living_place: 'Forests and mountains', food: 'Omnivorous (plants and meat)', nature: 'Solitary, strong, and hibernating' },
+        monkey: { living_place: 'Forests', food: 'Omnivorous (plants and meat)', nature: 'Social, agile, and intelligent' },
+        rhinoceros: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Solitary, large, and territorial' },
+        rabbit: { living_place: 'Grasslands', food: 'Herbivorous (plants)', nature: 'Social, fast, and burrowing' },
+        deer: { living_place: 'Forests', food: 'Herbivorous (plants)', nature: 'Social, gentle, and migratory' },
+        fox: { living_place: 'Forests and grasslands', food: 'Carnivorous (meat)', nature: 'Solitary, cunning, and nocturnal' },
+        cat: { living_place: 'Domestic environments (homes, apartments)', food: 'Carnivorous (meat)', nature: 'Independent, playful, curious, and loyal' },
+        dog: { living_place: 'Domestic environments (homes, apartments)', food: 'Omnivorous (plants and meat)', nature: 'Loyal, friendly, and protective' },
+        parrot: { living_place: 'Tropical forests', food: 'Herbivorous (plants)', nature: 'Social, intelligent, and talkative' },
+    };
+
+
+    chatBtn.addEventListener('click', () => {
+        chatContainer.style.display = chatContainer.style.display === 'block' ? 'none' : 'block';
+    });
+
+
+    sendBtn.addEventListener('click', sendMessage);
+
+
+    userInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+
+    function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        appendMessage(message, 'user');
+        userInput.value = '';
+        processUserMessage(message);
+    }
+
+    // Function to append messages to chat box
+    function appendMessage(message, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+        messageDiv.innerText = message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Function to process user message
+    function processUserMessage(message) {
+        const words = message.toLowerCase().split(' ');
+        let response = "Sorry, I am having trouble understanding you right now. Please try again later.";
+
+        for (let word of words) {
+            if (animalInfo[word]) {
+                response = '';
+                if (message.includes('living place') || message.includes('live')) {
+                    response = `The ${word} lives in ${animalInfo[word].living_place}.`;
+                } else if (message.includes('food') || message.includes('eat')) {
+                    response = `The ${word} is ${animalInfo[word].food}.`;
+                } else if (message.includes('nature')) {
+                    response = `The ${word} is ${animalInfo[word].nature}.`;
+                } else {
+                    response = `Tell Me Sir How Can I Help You.`;
+                }
+                break;
+            }
+        }
+
+        appendMessage(response, 'bot');
+    }
+
+</script>
+
+</html>
